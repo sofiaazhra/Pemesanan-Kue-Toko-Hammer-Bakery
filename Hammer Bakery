@@ -39,6 +39,8 @@ private:
     vector<Cake> catalog;
     queue<Order> orders;
 
+  User* loggedInUser;
+
     void showCatalog() {
         cout << "\n+------------------- Catalog -------------------+\n";
         for (size_t i = 0; i < catalog.size(); ++i) {
