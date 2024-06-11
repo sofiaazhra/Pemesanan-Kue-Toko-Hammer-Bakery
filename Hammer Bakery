@@ -228,6 +228,7 @@ public:
         users.push_back(User(username, email, password));
         loggedInUser = &users.back(); 
         cout << "Sign up successful.\n";
+        userMenu();
     }
 
     void login() {
@@ -241,6 +242,7 @@ public:
             if (user.email == email && user.password == password) {
                 loggedInUser = &user;
                 cout << "Login successful. Welcome " << user.username << "!\n";
+                userMenu();
                 return;
             }
         }
