@@ -57,31 +57,6 @@ private:
         }
     }
 
-class HammerBakery {
-private:
-    vector<User> users;
-    vector<Cake> catalog;
-    queue<Order> orders;
-    User* loggedInUser;
-
-    void showCatalog() {
-        cout << "\n+------------------- Catalog -------------------+\n";
-        for (size_t i = 0; i < catalog.size(); ++i) {
-            cout << "� " << i + 1 << ". " << catalog[i].flavor << " with " << catalog[i].topping
-                 << " (" << catalog[i].size << ") - Rp " << catalog[i].price << "\n";
-            cout << "�    Description: " << catalog[i].description << "\n\n";
-        }
-        cout << "� " << catalog.size() + 1 << ". Back                                      �\n";
-        cout << "+-----------------------------------------------+\n";
-
-        int choice;
-        cout << "Choose 'Back' to return: ";
-        cin >> choice;
-        if (choice != catalog.size() + 1) {
-            cout << "Invalid choice. Returning to menu.\n";
-        }
-    }
-
     void makeOrder() {
         while (true) {
             cout << "\n+----------------- Make Order -----------------+\n";
@@ -238,17 +213,6 @@ public:
         catalog.push_back(Cake("Coconut", "Pineapple", "Small", 14000, "A tropical coconut cake with pineapple slices."));
         catalog.push_back(Cake("Almond", "Honey Glaze", "Medium", 22000, "A delicious almond cake with honey glaze."));
         catalog.push_back(Cake("Matcha", "Red Bean", "Large", 32000, "A green tea matcha cake with sweet red bean paste."));
-    }
-
-
-class HammerBakery {
-private:
-    vector<User> users;
-    User* loggedInUser;
-
-public:
-    HammerBakery() {
-        loggedInUser = nullptr;
     }
 
     void signUp() {
