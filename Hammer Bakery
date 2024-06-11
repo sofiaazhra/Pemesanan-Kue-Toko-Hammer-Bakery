@@ -38,8 +38,7 @@ private:
     vector<User> users;
     vector<Cake> catalog;
     queue<Order> orders;
-
-  User* loggedInUser;
+User* loggedInUser;
 
     void showCatalog() {
         cout << "\n+------------------- Catalog -------------------+\n";
