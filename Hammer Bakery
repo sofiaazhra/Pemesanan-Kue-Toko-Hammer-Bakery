@@ -12,6 +12,210 @@ public:
     User(string u, string e, string p) : username(u), email(e), password(p) {}
 };
 
+class Cake {
+public:
+    string flavor;
+    string topping;
+    string size;
+    double price;
+    string description;
+
+    Cake(string f, string t, string s, double p, string d) : flavor(f), topping(t), size(s), price(p), description(d) {}
+};
+
+class Order {
+public:
+    Cake cake;
+    bool confirmed;
+    string paymentProof;
+
+    Order(Cake c) : cake(c), confirmed(false) {}
+};
+
+class HammerBakery {
+private:
+    vector<User> users;
+    vector<Cake> catalog;
+    queue<Order> orders;
+    User* loggedInUser;
+
+    void showCatalog() {
+        cout << "\n+------------------- Catalog -------------------+\n";
+        for (size_t i = 0; i < catalog.size(); ++i) {
+            cout << "� " << i + 1 << ". " << catalog[i].flavor << " with " << catalog[i].topping
+                 << " (" << catalog[i].size << ") - Rp " << catalog[i].price << "\n";
+            cout << "�    Description: " << catalog[i].description << "\n\n";
+        }
+        cout << "� " << catalog.size() + 1 << ". Back                                      �\n";
+        cout << "+-----------------------------------------------+\n";
+
+        int choice;
+        cout << "Choose 'Back' to return: ";
+        cin >> choice;
+        if (choice != catalog.size() + 1) {
+            cout << "Invalid choice. Returning to menu.\n";
+        }
+    }
+
+    void makeOrder() {
+        while (true) {
+            cout << "\n+----------------- Make Order -----------------+\n";
+            cout << "� 1. Order from catalog                        �\n";
+            cout << "� 2. Custom order                              �\n";
+            cout << "� 3. Back                                      �\n";
+            cout << "+----------------------------------------------+\n";
+            cout << "Choose an option: ";
+            int choice;
+            cin >> choice;
+            if (choice == 1) {
+                showCatalog();
+                cout << "Choose a cake by number: ";
+                cin >> choice;
+                if (choice > 0 && choice <= catalog.size()) {
+                    if (confirmCake(catalog[choice - 1])) {
+                        orders.push(Order(catalog[choice - 1]));
+                        cout << "Order placed successfully.\n";
+                    }
+                } else {
+                    cout << "Invalid choice. Please try again.\n";
+                }
+            } else if (choice == 2) {
+                customOrder();
+            } else if (choice == 3) {
+                break;
+            } else {
+                cout << "Invalid choice. Please try again.\n";
+            }
+        }
+    }
+
+    void customOrder() {
+        string flavor, topping, size, description;
+        double price;
+
+        cout << "\n+---------------- Custom Order ----------------+\n";
+        cout << "Enter flavor: ";
+        cin >> flavor;
+        cout << "Enter topping: ";
+        cin >> topping;
+        cout << "Enter size (Small/Medium/Large): ";
+        cin >> size;
+        cout << "Enter description: ";
+        cin.ignore();
+        getline(cin, description);
+
+        if (size == "Small") {
+            price = 15000;
+        } else if (size == "Medium") {
+            price = 25000;
+        } else if (size == "Large") {
+            price = 35000;
+        } else {
+            cout << "Invalid size, setting default price.\n";
+            price = 20000;
+        }
+
+        Cake customCake(flavor, topping, size, price, description);
+        if (confirmCake(customCake)) {
+            orders.push(Order(customCake));
+            cout << "Custom cake ordered successfully.\n";
+        }
+    }
+
+    bool confirmCake(const Cake& cake) {
+        cout << "\nYou have selected: " << cake.flavor << " with " << cake.topping
+             << " (" << cake.size << ") - Rp " << cake.price << ".\n";
+        cout << "Description: " << cake.description << "\n";
+        cout << "Is this order correct (y/n)? ";
+        char confirm;
+        cin >> confirm;
+        return (confirm == 'y' || confirm == 'Y');
+    }
+
+    void confirmOrder() {
+        if (!orders.empty()) {
+            Order& order = orders.front();
+            cout << "\nConfirm your order: " << order.cake.flavor << " with "
+                 << order.cake.topping << " (" << order.cake.size << ") - Rp "
+                 << order.cake.price << "\n";
+            cout << "Description: " << order.cake.description << "\n";
+            cout << "(y/n)? ";
+            char confirm;
+            cin >> confirm;
+            if (confirm == 'y' || confirm == 'Y') {
+                order.confirmed = true;
+                cout << "Order confirmed.\n";
+            } else {
+                cout << "Order not confirmed.\n";
+            }
+        } else {
+            cout << "No orders to confirm.\n";
+        }
+    }
+
+    void makePayment() {
+        if (!orders.empty()) {
+            Order& order = orders.front();
+            if (order.confirmed) {
+                cout << "Upload your payment proof (type any string as mock image): ";
+                cin >> order.paymentProof;
+                cout << "Payment received. Thank you!\n";
+                orders.pop();
+            } else {
+                cout << "Please confirm your order first.\n";
+            }
+        } else {
+            cout << "No orders to pay for.\n";
+        }
+    }
+
+    void userMenu() {
+        while (true) {
+            cout << "\n+----------------- User Menu -----------------+\n";
+            cout << "� 1. View Catalog                             �\n";
+            cout << "� 2. Make Order                               �\n";
+            cout << "� 3. Confirm Order                            �\n";
+            cout << "� 4. Make Payment                             �\n";
+            cout << "� 5. Logout                                   �\n";
+            cout << "+---------------------------------------------+\n";
+            cout << "Choose an option: ";
+            int choice;
+            cin >> choice;
+            switch (choice) {
+            case 1:
+                showCatalog();
+                break;
+            case 2:
+                makeOrder();
+                break;
+            case 3:
+                confirmOrder();
+                break;
+            case 4:
+                makePayment();
+                break;
+            case 5:
+                loggedInUser = nullptr;
+                cout << "Logged out.\n";
+                return;
+            default:
+                cout << "Invalid option.\n";
+            }
+        }
+    }
+
+public:
+    HammerBakery() {
+        loggedInUser = nullptr;
+        catalog.push_back(Cake("Lemon", "Meringue", "Small", 12000, "A tangy lemon cake with fluffy meringue topping."));
+        catalog.push_back(Cake("Carrot", "Cream Cheese", "Medium", 18000, "A moist carrot cake with creamy cheese frosting."));
+        catalog.push_back(Cake("Mocha", "Chocolate Shavings", "Large", 28000, "A rich mocha cake with dark chocolate shavings."));
+        catalog.push_back(Cake("Coconut", "Pineapple", "Small", 14000, "A tropical coconut cake with pineapple slices."));
+        catalog.push_back(Cake("Almond", "Honey Glaze", "Medium", 22000, "A delicious almond cake with honey glaze."));
+        catalog.push_back(Cake("Matcha", "Red Bean", "Large", 32000, "A green tea matcha cake with sweet red bean paste."));
+    }
+
+
 class HammerBakery {
 private:
     vector<User> users;
