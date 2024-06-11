@@ -57,6 +57,31 @@ private:
         }
     }
 
+class HammerBakery {
+private:
+    vector<User> users;
+    vector<Cake> catalog;
+    queue<Order> orders;
+    User* loggedInUser;
+
+    void showCatalog() {
+        cout << "\n+------------------- Catalog -------------------+\n";
+        for (size_t i = 0; i < catalog.size(); ++i) {
+            cout << "� " << i + 1 << ". " << catalog[i].flavor << " with " << catalog[i].topping
+                 << " (" << catalog[i].size << ") - Rp " << catalog[i].price << "\n";
+            cout << "�    Description: " << catalog[i].description << "\n\n";
+        }
+        cout << "� " << catalog.size() + 1 << ". Back                                      �\n";
+        cout << "+-----------------------------------------------+\n";
+
+        int choice;
+        cout << "Choose 'Back' to return: ";
+        cin >> choice;
+        if (choice != catalog.size() + 1) {
+            cout << "Invalid choice. Returning to menu.\n";
+        }
+    }
+
     void makeOrder() {
         while (true) {
             cout << "\n+----------------- Make Order -----------------+\n";
@@ -257,7 +282,37 @@ public:
         cout << "Invalid email or password.\n";
     }
 
-    User* getLoggedInUser() {
-        return loggedInUser;
+void run() {
+        cout << "\nSelamat Datang di Hammer Bakery!\n"; // Pesan selamat datang
+        while (true) {
+            cout << "\n+----------------- Main Menu -----------------+\n";
+            cout << "� 1. Sign up                                  �\n";
+            cout << "� 2. Login                                    �\n";
+            cout << "� 3. Exit                                     �\n";
+            cout << "+---------------------------------------------+\n";
+            cout << "Choose an option: ";
+            int choice;
+            cin >> choice;
+            switch (choice) {
+            case 1:
+                signUp();
+                break;
+            case 2:
+                login();
+                break;
+            case 3:
+                return;
+            default:
+                cout << "Invalid option.\n";
+            }
+        }
     }
 };
+
+int main() {
+    HammerBakery bakery;
+    bakery.run();
+    return 0;
+}
+
+    
