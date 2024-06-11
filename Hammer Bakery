@@ -248,7 +248,7 @@ public:
     }
 
 void run() {
-        cout << "\nSelamat Datang di Hammer Bakery!\n"; // Pesan selamat datang
+        cout << "\nSelamat Datang di Hammer Bakery!\n"; 
         while (true) {
             cout << "\n+----------------- Main Menu -----------------+\n";
             cout << "� 1. Sign up                                  �\n";
