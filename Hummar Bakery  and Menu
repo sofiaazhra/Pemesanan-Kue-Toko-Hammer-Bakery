@@ -1,15 +1,15 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <string>
+using namespace std;
+
 class HammerBakery {
 private:
     vector<User> users;
     vector<Cake> catalog;
     queue<Order> orders;
     User* loggedInUser;
-
-
-
-
-
-
 void userMenu() {
         while (true) {
             cout << "\n+----------------- User Menu -----------------+\n";
@@ -55,12 +55,6 @@ public:
         catalog.push_back(Cake("Almond", "Honey Glaze", "Medium", 22000, "A delicious almond cake with honey glaze."));
         catalog.push_back(Cake("Matcha", "Red Bean", "Large", 32000, "A green tea matcha cake with sweet red bean paste."));
     }
-
-
-
-
-
-
 void run() {
         cout << "\nSelamat Datang di Hammer Bakery!\n"; // Pesan selamat datang
         while (true) {
