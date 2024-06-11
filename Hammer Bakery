@@ -101,8 +101,6 @@ User* loggedInUser;
         cin >> topping;
         cout << "Enter size (Small/Medium/Large): ";
         cin >> size;
-        cout << "Enter description: ";
-        cin.ignore();
         getline(cin, description);
 
         if (size == "Small") {
